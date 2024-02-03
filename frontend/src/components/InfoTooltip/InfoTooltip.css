@@ -1,0 +1,30 @@
+.infotooltip {
+    all: unset;
+
+    height: 120px;
+    width: 120px;
+    
+    background-repeat: no-repeat;
+    background-size: contain;
+    box-sizing: border-box;
+
+    margin: 26px auto 0 auto;
+
+}
+
+.infotooltip__request-success {
+    background-image: url(../../Images/icons/popup__register_sucsessful.svg);
+}
+
+.infotooltip__request-fail {
+    background-image: url(../../Images/icons/popup__register_failed.svg);
+}
+
+.infotooltip__message {
+    all: unset;
+    text-align: center;
+    font-size: 24px;
+    line-height: 29px;
+    font-weight: 900;
+    padding: 26px 0 32px 0;
+}
