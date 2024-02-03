@@ -1,0 +1,25 @@
+.image-popup {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.image-popup__wrapper {
+    position: relative;
+  }
+
+  
+  .image-popup__container {
+    all: unset;
+  }
+  
+  .image-popup__image {
+    max-width: 75vw;
+    max-height: 75vh;
+  }
+
+  .image-popup__caption {
+    color: white;
+    font-size: 12px;
+    font-weight: normal;
+    padding: 10px 0 0 0;
+  }
+  
