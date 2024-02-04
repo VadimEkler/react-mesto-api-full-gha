@@ -93,7 +93,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'http://localhost:3000',
+  baseUrl: 'http://vadimekler.nomoredomainsmonster.ru',
 });
 
 export default api;
