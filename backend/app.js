@@ -1,26 +1,20 @@
-require('dotenv').config();
 const { errors } = require('celebrate');
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const dotenv = require('dotenv');
 const errorHandler = require('./middlewares/errorHandler');
 
-const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
+dotenv.config();
+
+const { PORT } = process.env;
 
 const app = express();
 
-app.use(cors());
-
 app.use(express.json());
 
-mongoose.connect(DB_URL, {});
-
-app.use(requestLogger);
+mongoose.connect(process.env.DB_URL, {});
 
 app.use('/', require('./routes/index'));
-
-app.use(errorLogger);
 
 app.use(errors());
 

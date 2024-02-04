@@ -55,9 +55,8 @@ export default function Card({ card, onCardImageClick, onDelete }) {
       <h2 className="card__title">{card.name}</h2>
       <div className="card__like-wrapper">
         <button
-          className={`card__like-button ${
-            isLiked ? "card__like-button_active" : ""
-          }`}
+          className={`card__like-button ${isLiked ? "card__like-button_active" : ""
+            }`}
           type="button"
           onClick={handleLikeClick}
         />
