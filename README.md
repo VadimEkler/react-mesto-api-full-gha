@@ -8,8 +8,7 @@
 Адрес репозитория: https://github.com/VadimEkler/react-mesto-api-full-gha/tree/main
 
 ## Ссылки на проект
-
-IP-адрес: IP 158.160.143.24
+IP 158.160.143.24
 
 Frontend https://vadimekler.nomoredomainsmonster.ru
 
