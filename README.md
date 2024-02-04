@@ -5,11 +5,11 @@
   
 Пожалуйста, прикрепите в это описание ссылку на сайт, размещенный на Яндекс.Облаке.
 
-Адрес репозитория: IP https://github.com/VadimEkler/react-mesto-api-full-gha/tree/main
+Адрес репозитория: https://github.com/VadimEkler/react-mesto-api-full-gha/tree/main
 
 ## Ссылки на проект
 
-IP-адрес 158.160.143.24
+IP-адрес: IP 158.160.143.24
 
 Frontend https://vadimekler.nomoredomainsmonster.ru
 
