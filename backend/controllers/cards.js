@@ -7,8 +7,6 @@ const ForbiddenError = require('../errors/ForbiddenError');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    // чтобы получить поле owner в виде объекта, использую метод populate
-    .populate(['owner'])
     .then((cards) => res.status(httpConstants.HTTP_STATUS_OK).send(cards))
     .catch(next);
 };
@@ -18,11 +16,8 @@ module.exports.createCard = (req, res, next) => {
 
   Card.create({ name, link, owner: req.user._id })
     .then((card) => {
-      // вместо простого возврата в случае успешного запроса, использую метод populate,
-      // чтобы вернуть в поле owner объект пользователя
       Card.findById(card._id)
         .orFail()
-        .populate(['owner'])
         .then((data) => res.status(httpConstants.HTTP_STATUS_CREATED).send(data))
         .catch((err) => {
           if (err instanceof mongoose.Error.DocumentNotFoundError) {
@@ -74,7 +69,6 @@ module.exports.deleteCard = (req, res, next) => {
 module.exports.likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
     .orFail()
-    .populate(['owner'])
     .then((card) => {
       res.status(httpConstants.HTTP_STATUS_OK).send(card);
     })
@@ -92,7 +86,6 @@ module.exports.likeCard = (req, res, next) => {
 module.exports.dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
     .orFail()
-    .populate(['owner'])
     .then((card) => {
       res.status(httpConstants.HTTP_STATUS_OK).send(card);
     })

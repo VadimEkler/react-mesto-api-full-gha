@@ -26,8 +26,8 @@ function App() {
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [isRequestPopupOpen, setIsRequestPopupOpen] = useState(false);
   const [isImagePopup, setIsImagePopup] = useState(false);
-  
-  
+
+
   const [deleteCard, setDeleteCard] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
 
@@ -43,7 +43,7 @@ function App() {
     if (localStorage.jwt) {
       getDataUser(localStorage.jwt)
         .then(res => {
-          setDataUser(res.data.email)
+          setDataUser(res.email)
           setLoggedIn(true)
           navigate('/')
         })
@@ -56,7 +56,7 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      Promise.all([api.getInfo(), api.getCards()])
+      Promise.all([api.getInfo(localStorage.jwt), api.getCards(localStorage.jwt)])
         .then(([dataUser, dataCard]) => {
           setCurrentUser(dataUser);
           setCards(dataCard);
@@ -92,7 +92,7 @@ function App() {
   function handleCardDelete(e) {
     e.preventDefault();
     api
-      .removeCard(deleteCard)
+      .removeCard(deleteCard, localStorage.jwt)
       .then(() => {
         setCards(
           cards.filter((card) => {
@@ -106,7 +106,7 @@ function App() {
 
   function handleUpdateUser(data, reset) {
     api
-      .setUserInfo(data)
+      .setUserInfo(data, localStorage.jwt)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
@@ -119,7 +119,7 @@ function App() {
 
   function handleUpdateAvatar(data, reset) {
     api
-      .setNewAvatar(data)
+      .setNewAvatar(data, localStorage.jwt)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
@@ -132,7 +132,7 @@ function App() {
 
   function handleAddPlaceSubmit(data, reset) {
     api
-      .addCard(data)
+      .addCard(data, localStorage.jwt)
       .then((res) => {
         setCards([res, ...cards]);
         closeAllPopups();
@@ -184,42 +184,42 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <>
 
-      <Routes>
-        <Route path='/' element={
-          <ProtectedRoute
-            loggedIn={loggedIn}
-            dataUser={dataUser}
-            element = {ProtectedComponent}
-            onEditProfile={handleEditProfileClick}
-            onEditAvatar={handleEditAvatarClick}
-            onAddCard={handleAddPlaceClick}
-            onDelete={handleDeleteCardClick}
-            onCardImageClick={handleCardClick}
-            cards={cards}
+        <Routes>
+          <Route path='/' element={
+            <ProtectedRoute
+              loggedIn={loggedIn}
+              dataUser={dataUser}
+              element={ProtectedComponent}
+              onEditProfile={handleEditProfileClick}
+              onEditAvatar={handleEditAvatarClick}
+              onAddCard={handleAddPlaceClick}
+              onDelete={handleDeleteCardClick}
+              onCardImageClick={handleCardClick}
+              cards={cards}
+            />
+          }
           />
-        } 
-        />
 
-        <Route path='/sign-up' element={
-        <>
-          <Header name='sign-up'/>
-          <Main name='sign-up' handleRegister={handleRegister}/>
-        </>
-        } />
+          <Route path='/sign-up' element={
+            <>
+              <Header name='sign-up' />
+              <Main name='sign-up' handleRegister={handleRegister} />
+            </>
+          } />
 
 
-        <Route path='/sign-in' element={
-        <>
-          <Header name='sign-in'/>
-          <Main name='sign-in' handleLogin={handleLogin}/>
-        </>
-        }/> 
-        {/* Эндпоинт для произвольного пути */}
-        <Route path='*' element={<Navigate to='/' replace />}/>
-        
-      </Routes>
+          <Route path='/sign-in' element={
+            <>
+              <Header name='sign-in' />
+              <Main name='sign-in' handleLogin={handleLogin} />
+            </>
+          } />
+          {/* Эндпоинт для произвольного пути */}
+          <Route path='*' element={<Navigate to='/' replace />} />
 
-        
+        </Routes>
+
+
         <Footer />
 
         <EditProfilePopup
@@ -255,13 +255,13 @@ function App() {
           onClose={closeAllPopups}
         />
 
-        <InfoTooltip 
+        <InfoTooltip
           name='result'
           isSuccessful={isSuccessful}
           isOpen={isRequestPopupOpen}
           onClose={closeAllPopups}
         />
-        
+
       </>
     </CurrentUserContext.Provider>
   );

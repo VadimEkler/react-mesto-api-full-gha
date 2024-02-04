@@ -6,19 +6,23 @@ import api from "../../utils/api";
 
 export default function Card({ card, onCardImageClick, onDelete }) {
   const currentUser = useContext(CurrentUserContext);
-  const isOwn = card.owner._id === currentUser._id;
 
   const [isLiked, setIsLiked] = useState(false);
   const [likeCounter, setLikeCounter] = useState(card.likes.length);
+  const [isOwn, setIsOwn] = useState(card.owner === currentUser._id);
 
   useEffect(() => {
-    setIsLiked(card.likes.some((item) => currentUser._id === item._id));
+    setIsOwn(card.owner === currentUser._id);
+  }, [currentUser._id, card.owner])
+
+  useEffect(() => {
+    setIsLiked(card.likes.some((item) => currentUser._id === item));
   }, [card.likes, currentUser._id]);
 
   function handleLikeClick() {
     if (isLiked) {
       api
-        .removeLike(card._id)
+        .removeLike(card._id, localStorage.jwt)
         .then((res) => {
           setIsLiked(false);
           setLikeCounter(res.likes.length);
@@ -26,7 +30,7 @@ export default function Card({ card, onCardImageClick, onDelete }) {
         .catch((err) => console.error(`Ошибка при снятии лайка ${err}`));
     } else {
       api
-        .addLike(card._id)
+        .addLike(card._id, localStorage.jwt)
         .then((res) => {
           setIsLiked(true);
           setLikeCounter(res.likes.length);

@@ -1,34 +1,35 @@
 class Api {
   constructor(options) {
     this._url = options.baseUrl;
-    this._headers = options.headers;
-    this._authorization = options.headers.authorization;
   }
 
   _checkResponse(res) {
     return res.ok ? res.json() : Promise.reject;
   }
 
-  getInfo() {
+  getInfo(token) {
     return fetch(`${this._url}/users/me`, {
       headers: {
-        authorization: this._authorization,
+        "Authorization": `Bearer ${token}`,
       },
     }).then(this._checkResponse);
   }
 
-  getCards() {
+  getCards(token) {
     return fetch(`${this._url}/cards`, {
       headers: {
-        authorization: this._authorization,
+        "Authorization": `Bearer ${token}`,
       },
     }).then(this._checkResponse);
   }
 
-  setUserInfo(data) {
+  setUserInfo(data, token) {
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization" : `Bearer ${token}`
+      },
       body: JSON.stringify({
         name: data.nickname,
         about: data.description,
@@ -36,20 +37,26 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  setNewAvatar(data) {
+  setNewAvatar(data, token) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization" : `Bearer ${token}`
+      },
       body: JSON.stringify({
         avatar: data.avatar,
       }),
     }).then(this._checkResponse);
   }
 
-  addCard(data) {
+  addCard(data, token) {
     return fetch(`${this._url}/cards `, {
       method: "POST",
-      headers: this._headers,
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization" : `Bearer ${token}`
+      },
       body: JSON.stringify({
         name: data.name,
         link: data.link,
@@ -57,40 +64,36 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  removeCard(cardId) {
+  removeCard(cardId, token) {
     return fetch(`${this._url}/cards/${cardId}`, {
       method: "DELETE",
       headers: {
-        authorization: this._authorization,
+        "Authorization" : `Bearer ${token}`
       },
     }).then(this._checkResponse);
   }
 
-  addLike(cardId) {
+  addLike(cardId, token) {
     return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: "PUT",
       headers: {
-        authorization: this._authorization,
+        "Authorization" : `Bearer ${token}`
       },
     }).then(this._checkResponse);
   }
 
-  removeLike(cardId) {
+  removeLike(cardId, token) {
     return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: "DELETE",
       headers: {
-        authorization: this._authorization,
+        "Authorization" : `Bearer ${token}`
       },
     }).then(this._checkResponse);
   }
 }
 
 const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-75",
-  headers: {
-    authorization: "2b612430-bf53-4842-8fac-4e392ff44657",
-    "Content-Type": "application/json",
-  },
+  baseUrl: 'http://localhost:3000',
 });
 
 export default api;
