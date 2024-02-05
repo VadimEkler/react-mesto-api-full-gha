@@ -93,7 +93,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://vadimekler.nomoredomainsmonster.ru',
+  baseUrl: 'https://api.vadimekler.nomoredomainsmonster.ru',
 });
 
 export default api;
